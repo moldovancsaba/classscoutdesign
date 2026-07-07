@@ -12,6 +12,7 @@ The site is **generated from the design-system source** and published to
 - **Docs page** — [`project/design-system.html`](project/design-system.html) → served as the site root `index.html`
 - **UI kit** — [`project/ui_kits/classscout-web/index.html`](project/ui_kits/classscout-web/index.html) → `/ui_kits/classscout-web/`
 - Original design-tool handoff notes: [`HANDOFF.md`](HANDOFF.md)
+- Refresh the design source from Claude Design (run locally): [`docs/SYNC-LOCALLY.md`](docs/SYNC-LOCALLY.md)
 
 ---
 
