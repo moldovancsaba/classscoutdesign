@@ -1,25 +1,72 @@
-# CODING AGENTS: READ THIS FIRST
+# ClassScout NYC — Design System website
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+The public, browsable **ClassScout NYC Design System** — everything designers,
+developers, and decision makers need to build ClassScout: principles, the
+**Bluestone** color/type/spacing tokens, the trust system, and every UI
+component rendered live from its real source. Plus the responsive
+Home → Results → Detail click-through.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+The site is **generated from the design-system source** and published to
+**GitHub Pages** by CI, so it never drifts from the components it documents.
 
-## What you should do — IMPORTANT
+- **Docs page** — [`project/design-system.html`](project/design-system.html) → served as the site root `index.html`
+- **UI kit** — [`project/ui_kits/classscout-web/index.html`](project/ui_kits/classscout-web/index.html) → `/ui_kits/classscout-web/`
+- Original design-tool handoff notes: [`HANDOFF.md`](HANDOFF.md)
 
-**Read the chat transcripts first.** There are 2 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+---
 
-**Read `project/design-system-standalone.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+## How it works
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+`project/` holds the design system source exactly as exported from Claude Design:
 
-## About the design files
+| Source | What it is |
+|---|---|
+| `project/tokens/`, `project/styles.css` | Design tokens (Bluestone palette, type, spacing, shape) — the single source of truth |
+| `project/components/**/*.jsx` | The 27 React components, token-driven, inline-styled |
+| `project/design-system.html` | The documentation page (principles, tokens, live demos, usage rules) |
+| `project/ui_kits/classscout-web/` | The responsive click-through screens |
+| `project/guidelines/`, `project/assets/`, `project/fonts/` | Guideline cards, brand assets, self-hosted Inter |
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+`npm run build` (see [`scripts/build.mjs`](scripts/build.mjs)) assembles `dist/`:
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+1. Copies the `project/` source into `dist/`.
+2. **Regenerates the component demo bundle** (`assets/ds-static-bundle.js`) from
+   `components/**/*.jsx` — so the docs demos always match the component source.
+3. **Regenerates the UI-kit bundle** (`_ds_bundle.js`) from the kit screens, so
+   the click-through loads instantly without in-browser transpilation.
+4. Writes `index.html` (the docs page) and `.nojekyll`.
 
-## Bundle contents
+React, ReactDOM, and Babel are **vendored** in `project/assets/vendor/` — the
+site pulls nothing from a CDN at runtime, so it works offline and can't break
+when an external package changes.
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `ClassScout Design System` project files (HTML prototypes, assets, components)
+Because the tokens, CSS, HTML, and components are served from source (only the
+two `.jsx` bundles are generated), **editing the design system updates the
+website** on the next deploy. Change a token → push → the live site rebuilds.
+
+## Local development
+
+```bash
+npm install      # installs the three Babel build deps
+npm run build    # writes dist/
+npm run serve    # serves dist/ at http://localhost:8080
+```
+
+## Deploying to GitHub Pages
+
+Deployment is automated by [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml):
+every push to `main` rebuilds `dist/` and publishes it.
+
+**One-time setup** after pushing this repo to GitHub:
+
+1. Push to a GitHub repository (e.g. `main` branch).
+2. In the repo, open **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **GitHub Actions**.
+
+That's it. The first push (or **Actions → Deploy design system to GitHub Pages
+→ Run workflow**) publishes the site to
+`https://<user>.github.io/<repo>/`.
+
+> The workflow builds from source on every push, so the published site always
+> reflects the current design system — no committed build artifacts, no manual
+> re-export.

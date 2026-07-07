@@ -1,0 +1,16 @@
+{
+  "name": "classscout-design-system-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ClassScout NYC Design System — static documentation site, generated from the design-system source and published to GitHub Pages.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3"
+  }
+}
