@@ -1,0 +1,16 @@
+/* ClassScout NYC — spacing (handoff v2 §11.5, 8px grid). */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --card-pad: 16px;          /* mobile-first; screens may widen to 20–24 */
+  --page-max: 1200px;        /* text-heavy pages cap 1120–1280 (v2 §28.2) */
+  --page-pad: clamp(16px, 4vw, 32px);
+  --tap-target: 44px;        /* WCAG mobile comfort (v2 §13.2) */
+}

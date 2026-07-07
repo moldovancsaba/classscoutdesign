@@ -1,0 +1,16 @@
+/* ClassScout NYC — breakpoints (handoff v2 §28.1).
+   Tokens for documentation + JS matchMedia; CSS can't read vars in @media,
+   so media queries in kit CSS repeat these literals with a comment. */
+:root {
+  --bp-xs-max: 374px;   /* XS 0–374 small phones */
+  --bp-sm-min: 375px;   /* SM 375–599 standard phones */
+  --bp-md-min: 600px;   /* MD 600–899 large phones / small tablets */
+  --bp-lg-min: 900px;   /* LG 900–1199 tablets / small laptops */
+  --bp-xl-min: 1200px;  /* XL 1200–1439 desktop */
+  --bp-xxl-min: 1440px; /* XXL 1440+ large desktop */
+
+  /* Split-view geometry (v2 §32.3, §33.2) */
+  --rail-filter-w: 264px;   /* filter rail 240–280 */
+  --col-results-min: 420px; /* results column min */
+  --col-map-min: 420px;     /* map panel min */
+}

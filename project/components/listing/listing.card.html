@@ -1,0 +1,44 @@
+<!-- @dsCard group="Components" viewport="900x640" subtitle="Activity card, facts table, confirm checklist" name="Listing" -->
+<!DOCTYPE html><html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../../assets/dev-loader.js"></script>
+</head><body style="margin:0;background:var(--bg-main);font-family:var(--font-ui)">
+<div id="root" style="padding:16px"></div>
+<script type="text/babel">
+let ActivityCard, DetailFactsTable, ConfirmChecklist, PriceEstimateLabel;
+function Demo() {
+  const [saved, setSaved] = React.useState(false);
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 380px) minmax(0, 1fr)', gap: 16, alignItems: 'start' }}>
+      <ActivityCard
+        title="Kids Robotics Workshop" provider="Brooklyn Robot Foundry"
+        neighborhood="Park Slope, Brooklyn" category="STEM" ages="6–10" setting="Indoor"
+        summary="Hands-on robotics class for children who enjoy building and problem-solving."
+        price="$45" schedule="This Saturday"
+        sourceKind="official-source" lastChecked="2 July 2026" sourceLabel="provider website"
+        saved={saved} onToggleSave={() => setSaved(!saved)}
+        providerHref="#" onViewDetails={() => {}} onAskScout={() => {}}
+      />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 }}>
+        <DetailFactsTable rows={[
+          { label: 'Age range', value: '6–10' },
+          { label: 'Activity type', value: 'STEM class' },
+          { label: 'Location', value: 'Park Slope, Brooklyn' },
+          { label: 'Price', value: <PriceEstimateLabel amount="$45" /> },
+          { label: 'Booking', value: 'Registration required' },
+          { label: 'Last checked', value: '2 July 2026' },
+        ]} />
+        <ConfirmChecklist />
+      </div>
+    </div>
+  );
+}
+getDS('../../', ['ActivityCard', 'DetailFactsTable', 'ConfirmChecklist'], ['./ActivityCard.jsx', './DetailFactsTable.jsx', './ConfirmChecklist.jsx', '../trust/PriceEstimateLabel.jsx']).then((NS) => {
+  ({ ActivityCard, DetailFactsTable, ConfirmChecklist, PriceEstimateLabel } = NS);
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+});
+</script>
+</body></html>

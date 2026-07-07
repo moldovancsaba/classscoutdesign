@@ -1,0 +1,67 @@
+/* ClassScout NYC — color tokens. Identity: "Bluestone" — cool NYC-civic warmth.
+   Drawn from the city's materials: bluestone sidewalks, park green, limestone,
+   a marigold spark. Deliberately NOT cream + soft-teal (the generic default).
+   Single source of truth: every component reads these variables. */
+:root {
+  /* Brand (pin mark: bluestone outline, sage cap, clay magnifier) */
+  --brand-navy: #16323F;      /* deep bluestone — footer, dark bands, saved pins */
+  --brand-sage: #94A390;      /* scout cap — illustration accents only */
+  --brand-clay: #C98973;      /* magnifier — illustration accents only */
+
+  /* Backgrounds — cool oat / limestone, not cream */
+  --bg-main: #ECEFE9;         /* page — cool oat */
+  --bg-card: #FFFFFF;         /* cards — crisp white lifts off the oat */
+  --bg-sunken: #E1E6DC;       /* wells, skeletons, map placeholder */
+  --bg-navy: var(--brand-navy);
+
+  /* Text — bluestone ink */
+  --text-primary: #1B2A31;    /* main text */
+  --text-secondary: #566670;  /* metadata */
+  --text-on-dark: #EEF1E9;
+  --text-on-primary: #FFFFFF;
+
+  /* Actions — bluestone blue */
+  --primary: #1F5E7A;         /* main CTA — civic bluestone, deeper than consumer teal */
+  --primary-dark: #16455B;    /* hover / pressed */
+  --secondary: #D7DFD9;       /* quiet secondary action (cool stone) */
+  --secondary-dark: #C7D1CA;  /* secondary hover */
+  --secondary-text: #2E3D44;
+
+  /* Semantic */
+  --trust: #4E7C4A;           /* pine/park green — trust signals, used sparingly */
+  --trust-soft: #E5EEDE;
+  --warning: #C0801F;         /* burnt amber — estimates / caution, never alarm */
+  --warning-soft: #F5EAD4;
+  --error: #B0463F;           /* muted brick red — errors, clear not frightening */
+  --error-soft: #F3E5E3;
+  --error-dark: #973930;      /* danger button hover */
+  --chip-bg: #E2ECEA;         /* filter chips resting tint (cool) */
+  --highlight: #E7A733;       /* MARIGOLD — signature brand accent (warmth, energy) */
+  --accent: var(--highlight); /* alias: the brand spark */
+  --accent-soft: #F7E7C4;     /* marigold wash for brand moments */
+  --skeleton-highlight: #DAE0D3; /* shimmer sweep peak */
+
+  /* Fixed white/overlays (rigid single source; used on images + dark bands) */
+  --pure-white: #FFFFFF;
+  --overlay-scrim-dark: rgba(22, 50, 63, 0.82);   /* dark badge over photos */
+  --overlay-scrim-light: rgba(255, 255, 255, 0.94); /* light badge over photos */
+  --on-dark-dim: rgba(238, 241, 233, 0.76);       /* dimmed text on bluestone */
+  --border-warning: rgba(192, 128, 31, 0.32);     /* amber panel border (--warning tint) */
+  --border-error: rgba(176, 70, 63, 0.28);        /* error panel border (--error tint) */
+
+  /* Borders + focus */
+  --border-soft: #D8DCCF;
+  --border-strong: #C1C7B6;
+  --focus-ring: #1F5E7A;
+
+  /* Semantic aliases */
+  --surface-page: var(--bg-main);
+  --surface-card: var(--bg-card);
+  --action-primary: var(--primary);
+  --badge-trust-bg: var(--trust-soft);
+  --badge-trust-text: #3A6137;
+  --badge-estimate-bg: var(--warning-soft);
+  --badge-estimate-text: #855814;
+  --badge-error-text: #8B362F;
+  --scrim: rgba(22, 50, 63, 0.44);
+}

@@ -1,0 +1,66 @@
+<!-- @dsCard group="ClassScout Web" viewport="1280x860" subtitle="Responsive click-through: home → results (list+map) → detail" name="ClassScout web" -->
+<!-- @startingPoint section="Screens" subtitle="Responsive Home / Results / Detail click-through" viewport="1280x860" -->
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClassScout NYC — web UI kit</title>
+<link rel="icon" href="../../assets/favicon.ico">
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../../assets/dev-loader.js"></script>
+<style>html, body { margin: 0; background: var(--bg-main); }</style>
+</head><body>
+<div id="root"><div style="padding:48px;font:400 15px/1.5 var(--font-ui);color:var(--text-secondary)">Loading source-backed listings&hellip;</div></div>
+<script>
+const h = React.createElement;
+
+function boot(NS) {
+  const { HomeScreen, ResultsScreen, DetailScreen, BottomNav, useViewport } = NS;
+
+  function App() {
+    const [route, setRoute] = React.useState('home');
+    /* state preserved across navigation (v2 §35.6) */
+    const [filters, setFilters] = React.useState({ age: '5–8', date: ['This weekend'] });
+    const [saved, setSaved] = React.useState({});
+    const vp = useViewport();
+
+    const nav = (id) => {
+      if (id === 'find' || id === 'home' || id === 'scout' || id === 'account' || id === 'providers' || id === 'birthdays') setRoute('home');
+      else if (id === 'detail') setRoute('detail');
+      else setRoute('results'); /* week, camps, saved, search */
+      window.scrollTo(0, 0);
+    };
+
+    let screen;
+    if (route === 'results') {
+      screen = h(ResultsScreen, { onNav: nav, onOpenListing: () => nav('detail'), filters, setFilters, saved, setSaved });
+    } else if (route === 'detail') {
+      screen = h(DetailScreen, { onNav: nav, onBack: () => setRoute('results'), saved, setSaved });
+    } else {
+      screen = h(HomeScreen, { onNav: nav, onSearch: () => nav('results') });
+    }
+
+    const bottomTab = route === 'home' ? 'search' : 'week';
+    return h(React.Fragment, null,
+      screen,
+      vp.isMobile ? h(BottomNav, {
+        current: bottomTab,
+        onNav: (id) => nav(id === 'search' ? 'home' : id),
+        badge: Object.values(saved).filter(Boolean).length ? { saved: Object.values(saved).filter(Boolean).length } : undefined,
+      }) : null
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+}
+
+getDS('../../', ['HomeScreen', 'ResultsScreen', 'DetailScreen'], ['./HomeScreen.jsx', './ResultsScreen.jsx', './DetailScreen.jsx', './Responsive.jsx', '../../components/navigation/BottomNav.jsx'])
+  .then(boot)
+  .catch((e) => {
+    console.error('load failed:', e && e.message, e && e.stack);
+    document.getElementById('root').innerHTML = '<div style="padding:48px;font:14px monospace;color:var(--error);white-space:pre-wrap">We could not load this preview. ' + (e && e.message) + '</div>';
+  });
+</script>
+</body></html>

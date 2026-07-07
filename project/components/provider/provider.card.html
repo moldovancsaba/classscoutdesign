@@ -1,0 +1,18 @@
+<!-- @dsCard group="Components" viewport="620x240" subtitle="Navy 'List your program' module" name="Provider" -->
+<!DOCTYPE html><html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../../assets/dev-loader.js"></script>
+</head><body style="margin:0;background:var(--bg-main);font-family:var(--font-ui)">
+<div id="root" style="padding:16px"></div>
+<script type="text/babel">
+let ProviderCTA;
+function Demo() { return <ProviderCTA />; }
+getDS('../../', ['ProviderCTA'], ['./ProviderCTA.jsx']).then((NS) => {
+  ({ ProviderCTA } = NS);
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+});
+</script>
+</body></html>

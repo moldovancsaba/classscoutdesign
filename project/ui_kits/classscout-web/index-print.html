@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClassScout NYC — web UI kit (print)</title>
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../../assets/dev-loader.js"></script>
+<style>
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; background: var(--bg-main); }
+  @page { size: letter; margin: 0; }
+  body { padding: 0.5in 0.6in; box-sizing: border-box; }
+  .screen-note {
+    font: 500 13px/1.5 var(--font-ui); color: var(--badge-estimate-text);
+    background: var(--warning-soft); border: 1px solid var(--border-warning);
+    border-radius: 12px; padding: 10px 14px; margin: 0 0 16px;
+  }
+  @media print { .screen-note { display: none; } }
+  .print-screen { break-before: page; }
+  .print-screen:first-of-type { break-before: auto; }
+  .print-caption {
+    font: 500 12px/1.4 var(--font-ui); color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin: 0 0 12px; break-after: avoid;
+  }
+  h1, h2, h3, h4 { break-after: avoid; }
+  article, section, table, dl, figure { break-inside: avoid; }
+  body { orphans: 3; widows: 3; }
+  @media print {
+    header, nav { position: static !important; }
+    .print-screen > div { min-height: 0 !important; padding-bottom: 0 !important; }
+    footer { margin-top: 24px !important; }
+    *, *::before, *::after {
+      animation-delay: -99s !important; animation-duration: .001s !important;
+      animation-iteration-count: 1 !important; animation-fill-mode: both !important;
+      animation-play-state: running !important; transition-duration: 0s !important;
+    }
+  }
+</style>
+</head><body>
+<div id="root"><div class="screen-note">This is the print/PDF version — it is laid out for paper, not for browsing. For the interactive design, open <b>ui_kits/classscout-web/index.html</b>.</div><div style="padding:24px;font:400 15px/1.5 var(--font-ui);color:var(--text-secondary)">Preparing print layout&hellip;</div></div>
+<script>
+const h = React.createElement;
+
+/* Force a paper-friendly breakpoint (MD): single/two-column flow, no sticky splits. */
+window.__vpOverride = 700;
+
+function boot(NS) {
+  const { HomeScreen, ResultsScreen, DetailScreen } = NS;
+  const noop = () => {};
+
+  function PrintApp() {
+    const [filters, setFilters] = React.useState({ age: '5–8', date: ['This weekend'] });
+    const [saved, setSaved] = React.useState({ robotics: true });
+    return h(React.Fragment, null,
+      h('div', { className: 'screen-note' }, 'This is the print/PDF version — it is laid out for paper, not for browsing. For the interactive design, open ui_kits/classscout-web/index.html.'),
+      h('section', { className: 'print-screen' },
+        h('p', { className: 'print-caption' }, 'ClassScout NYC · Homepage'),
+        h(HomeScreen, { onNav: noop, onSearch: noop })
+      ),
+      h('section', { className: 'print-screen' },
+        h('p', { className: 'print-caption' }, 'ClassScout NYC · Search results'),
+        h(ResultsScreen, { onNav: noop, onOpenListing: noop, filters, setFilters, saved, setSaved })
+      ),
+      h('section', { className: 'print-screen' },
+        h('p', { className: 'print-caption' }, 'ClassScout NYC · Listing detail'),
+        h(DetailScreen, { onNav: noop, onBack: noop, saved, setSaved })
+      )
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(h(PrintApp));
+}
+
+getDS('../../', ['HomeScreen', 'ResultsScreen', 'DetailScreen'], ['./HomeScreen.jsx', './ResultsScreen.jsx', './DetailScreen.jsx', './Responsive.jsx'])
+  .then(boot)
+  .catch((e) => {
+    document.getElementById('root').innerHTML = '<div style="padding:24px;font:14px monospace;color:var(--error);white-space:pre-wrap">Could not prepare the print layout. ' + (e && e.message) + '</div>';
+  });
+</script>
+<script>
+addEventListener('load', () => {
+  (async () => {
+    /* wait for the React app to mount (dev-loader transpiles asynchronously) */
+    await new Promise((resolve) => {
+      const t0 = Date.now();
+      (function poll() {
+        const ok = document.querySelectorAll('.print-screen').length >= 3;
+        if (ok || Date.now() - t0 > 20000) resolve();
+        else setTimeout(poll, 200);
+      })();
+    });
+    try { await document.fonts.ready; } catch (e) {}
+    const imgs = Array.from(document.images).filter((i) => !i.complete);
+    await Promise.race([
+      Promise.allSettled(imgs.map((i) => i.decode())),
+      new Promise((r) => setTimeout(r, 8000)),
+    ]);
+    setTimeout(() => window.print(), 700);
+  })();
+});
+</script>
+</body></html>

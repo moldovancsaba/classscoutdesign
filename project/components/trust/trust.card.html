@@ -1,0 +1,37 @@
+<!-- @dsCard group="Components" viewport="700x520" subtitle="Nine defined trust labels, price/freshness, source block" name="Trust" -->
+<!DOCTYPE html><html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../../assets/dev-loader.js"></script>
+</head><body style="margin:0;background:var(--bg-main);font-family:var(--font-ui)">
+<div id="root" style="padding:16px"></div>
+<script type="text/babel">
+let TrustBadge, PriceEstimateLabel, LastCheckedLabel, ReportOutdatedLink, SourceBlock;
+function Demo() {
+  const kinds = ['official-source','public-source','provider-claimed','recently-checked','price-estimate','schedule-estimate','age-not-confirmed','source-not-confirmed','reported-outdated'];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {kinds.map((k) => <TrustBadge key={k} kind={k} />)}
+      </div>
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+        <PriceEstimateLabel status="free" />
+        <PriceEstimateLabel amount="$45" />
+        <PriceEstimateLabel status="unknown" />
+        <PriceEstimateLabel amount="$620" unit="week" size="lg" />
+      </div>
+      <LastCheckedLabel date="2 July 2026" source="provider website" />
+      <LastCheckedLabel date="28 May 2026" stale />
+      <ReportOutdatedLink />
+      <SourceBlock sourceType="Official provider website" sourceUrl="#" lastChecked="2 July 2026" />
+    </div>
+  );
+}
+getDS('../../', ['TrustBadge', 'SourceBlock'], ['./TrustBadge.jsx', './PriceEstimateLabel.jsx', './LastCheckedLabel.jsx', './ReportOutdatedLink.jsx', './SourceBlock.jsx']).then((NS) => {
+  ({ TrustBadge, PriceEstimateLabel, LastCheckedLabel, ReportOutdatedLink, SourceBlock } = NS);
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+});
+</script>
+</body></html>

@@ -1,0 +1,34 @@
+<!-- @dsCard group="Components" viewport="880x620" subtitle="Hero search, quick starts, filter rail" name="Search" -->
+<!DOCTYPE html><html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../../assets/dev-loader.js"></script>
+</head><body style="margin:0;background:var(--bg-main);font-family:var(--font-ui)">
+<div id="root" style="padding:16px"></div>
+<script type="text/babel">
+let HeroSearchPanel, QuickStartCard, FilterSheet;
+function Demo() {
+  const [f, setF] = React.useState({ age: '5–8', date: ['This weekend'] });
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 280px', gap: 16, alignItems: 'start' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 }}>
+        <HeroSearchPanel />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 10 }}>
+          <QuickStartCard label="This weekend" icon="calendar" />
+          <QuickStartCard label="Free & low-cost" icon="info" />
+          <QuickStartCard label="Indoor activities" icon="house" />
+          <QuickStartCard label="Near me" icon="locate-fixed" />
+        </div>
+      </div>
+      <FilterSheet mode="rail" values={f} onChange={setF} onApply={() => {}} onClear={() => setF({})} resultCount={12} style={{ width: 'auto' }} />
+    </div>
+  );
+}
+getDS('../../', ['HeroSearchPanel', 'QuickStartCard', 'FilterSheet'], ['./HeroSearchPanel.jsx', './QuickStartCard.jsx', './FilterSheet.jsx']).then((NS) => {
+  ({ HeroSearchPanel, QuickStartCard, FilterSheet } = NS);
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+});
+</script>
+</body></html>

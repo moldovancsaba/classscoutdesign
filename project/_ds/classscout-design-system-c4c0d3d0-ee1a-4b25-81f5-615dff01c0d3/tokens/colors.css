@@ -1,0 +1,56 @@
+/* ClassScout NYC color tokens — per the Parent-First Trust UX/UI handoff (§11.2).
+   Calm civic warmth: warm off-white canvas, white cards, teal primary, muted-green trust,
+   amber estimates/caution, soft red errors. */
+
+:root {
+  /* Doc palette (base) */
+  --bg-main: #faf7f1;        /* page background */
+  --bg-card: #ffffff;        /* cards and panels */
+  --text-primary: #1f2933;   /* main text */
+  --text-secondary: #5b6573; /* metadata */
+  --primary: #1f7a8c;        /* main CTA — teal */
+  --primary-dark: #145766;   /* hover / pressed */
+  --trust: #4f8a5b;          /* trust signals — muted green */
+  --warning: #c78a2c;        /* estimates / caution — amber */
+  --error: #b84a4a;          /* errors — soft red */
+  --border-soft: #e6e1d8;    /* borders */
+  --chip-bg: #edf7f8;        /* filter chips */
+  --highlight: #f4d6a0;      /* light emphasis */
+
+  /* Derived tints (not in the doc; kept quiet and low-saturation) */
+  --primary-tint: #edf7f8;   /* = chip-bg */
+  --trust-tint: #eaf2ec;
+  --warning-tint: #f8eedd;
+  --error-tint: #f7e6e6;
+  --line: rgba(31, 41, 51, 0.12);
+
+  /* Legacy --cs-* aliases (pre-teal component code) — remapped onto the doc palette.
+     Old brand roles → new roles: navy→text/ink, terracotta→primary teal, sage→trust green,
+     cream→warm canvas, slate→secondary text. Keep new code on the doc tokens above. */
+  --cs-white: #ffffff;
+  --cs-cream: var(--bg-main);
+  --cs-cream-hover: #f3efe6;
+  --cs-border-card: var(--border-soft);
+  --cs-line: var(--line);
+  --cs-navy: var(--text-primary);
+  --cs-navy-700: #33404d;
+  --cs-navy-pressed: #141c24;
+  --cs-slate: var(--text-secondary);
+  --cs-slate-300: #a3abb5;
+  --cs-terracotta: var(--primary);
+  --cs-terracotta-600: var(--primary-dark);
+  --cs-terracotta-100: var(--primary-tint);
+  --cs-terracotta-tint: var(--warning-tint);
+  --cs-sage: var(--trust);
+  --cs-sage-100: var(--trust-tint);
+  --cs-sage-600: #3e6f48;
+  --cs-tag-neutral: var(--chip-bg);
+
+  /* Semantic aliases */
+  --bg-page: var(--bg-main);
+  --surface-card: var(--bg-card);
+  --action-primary: var(--primary);
+  --action-primary-pressed: var(--primary-dark);
+  --focus-ring: var(--primary);
+  --text-on-primary: #ffffff;
+}

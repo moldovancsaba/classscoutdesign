@@ -1,0 +1,871 @@
+<!-- @dsCard group="ClassScout Web" viewport="1280x860" subtitle="The introduction page: principles, tokens, components, usage rules" name="Design system docs" -->
+<!-- @startingPoint section="Screens" subtitle="Design-system documentation page" viewport="1280x860" -->
+<!DOCTYPE html><html lang="en"><head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClassScout NYC Design System</title>
+<link rel="icon" href="assets/favicon.ico">
+<link rel="stylesheet" href="styles.css">
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#ECEFE9"/>
+    <rect x="30" y="30" width="40" height="40" rx="10" fill="#1F5E7A"/>
+    <text x="50" y="57" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">CS</text>
+  </svg>
+</template>
+<meta name="ext-resource-dependency" content="assets/logo-pin-light.png">
+<script crossorigin="anonymous" src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="assets/ds-static-bundle.js"></script>
+<style>
+  html, body { margin: 0; background: var(--bg-main); color: var(--text-primary); font-family: var(--font-ui); }
+  * { box-sizing: border-box; }
+  a { color: var(--primary-dark); }
+  .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); max-width: var(--page-max); margin: 0 auto; gap: var(--space-7); padding: 0 var(--page-pad); }
+  .toc { position: sticky; top: var(--space-5); align-self: start; padding: var(--space-5) 0 var(--space-7); display: flex; flex-direction: column; gap: var(--space-1); }
+  .toc a { font: var(--text-meta-medium); color: var(--text-secondary); text-decoration: none; padding: var(--space-2) var(--space-3); border-radius: var(--radius-chip); min-height: 36px; display: flex; align-items: center; }
+  .toc a:hover { background: var(--chip-bg); color: var(--primary-dark); }
+  .toc a[aria-current="true"] { background: var(--chip-bg); color: var(--primary-dark); font-weight: 600; }
+  .toc .toc-h { font: var(--text-badge); color: var(--text-secondary); text-transform: uppercase; letter-spacing: var(--tracking-wide); margin: var(--space-4) var(--space-3) var(--space-1); }
+  main { padding-bottom: var(--space-8); min-width: 0; }
+  section.ds { margin-top: var(--space-8); scroll-margin-top: var(--space-5); }
+  h1 { font: var(--text-h1); margin: 0; text-wrap: pretty; }
+  h2 { font: var(--text-h2); margin: 0 0 var(--space-2); }
+  h3 { font: var(--text-h3); margin: var(--space-6) 0 var(--space-2); }
+  p.lede { font: var(--text-body); color: var(--text-secondary); max-width: var(--measure-text); margin: var(--space-2) 0 0; }
+  .demo { background: var(--surface-card); border: var(--border-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: var(--space-5); margin-top: var(--space-4); }
+  .demo-note { font: var(--text-meta); color: var(--text-secondary); margin-top: var(--space-3); }
+  .dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-top: var(--space-4); }
+  .dd { border-radius: var(--radius-card); padding: var(--space-4); font: var(--text-meta); }
+  .dd ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); display: grid; gap: var(--space-1); }
+  .dd.do { background: var(--trust-soft); color: var(--text-primary); }
+  .dd.dont { background: var(--error-soft); color: var(--text-primary); }
+  .dd .tag { font: var(--text-badge); padding: 4px var(--space-3); border-radius: var(--radius-chip); }
+  .dd.do .tag { background: var(--trust); color: var(--pure-white); }
+  .dd.dont .tag { background: var(--error); color: var(--pure-white); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
+  .sw .chip { height: 56px; border-radius: var(--radius-button); border: 1px solid var(--border-soft); }
+  .sw .n { font: var(--text-meta-medium); margin-top: var(--space-2); }
+  .sw .v { font: var(--text-badge); color: var(--text-secondary); }
+  table.spec { border-collapse: collapse; width: 100%; margin-top: var(--space-3); background: var(--surface-card); border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border-soft); }
+  table.spec th, table.spec td { text-align: left; font: var(--text-meta); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+  table.spec th { font: var(--text-meta-medium); color: var(--text-secondary); background: var(--bg-sunken); }
+  table.spec tr:last-child td { border-bottom: none; }
+  /* inline code: monospace is an intentional documentation exception (naming files/tokens); all colors/spacing are tokens */
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: var(--bg-sunken); color: var(--text-primary); padding: 2px var(--space-2); border-radius: var(--radius-input); }
+  .audience { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
+  .aud { background: var(--surface-card); border: var(--border-card); border-radius: var(--radius-card); padding: var(--space-5); font: var(--text-meta); color: var(--text-secondary); }
+  .aud b { font: var(--text-body-medium); color: var(--text-primary); display: block; margin-bottom: var(--space-2); }
+  /* LG boundary from the breakpoint system (v2 §28.1) */
+  @media (max-width: 899px) { .layout { grid-template-columns: 1fr; } .toc { display: none; } }
+</style>
+</head><body>
+
+<div class="layout">
+  <nav class="toc" aria-label="Contents">
+    <span class="toc-h">Foundations</span>
+    <a href="#intro">Introduction</a>
+    <a href="#principles">Principles</a>
+    <a href="#brand">Brand</a>
+    <a href="#color">Color</a>
+    <a href="#type">Typography</a>
+    <a href="#space">Spacing &amp; shape</a>
+    <a href="#layout">Breakpoints &amp; layout</a>
+    <a href="#voice">Voice &amp; copy</a>
+    <span class="toc-h">System</span>
+    <a href="#trust">Trust system</a>
+    <a href="#core">Core controls</a>
+    <a href="#search">Search &amp; filters</a>
+    <a href="#listing">Listing card</a>
+    <a href="#detail">Detail page blocks</a>
+    <a href="#scout">Scout AI</a>
+    <a href="#states">System states</a>
+    <a href="#nav">Navigation</a>
+    <a href="#map">Map</a>
+    <span class="toc-h">Delivery</span>
+    <a href="#a11y">Accessibility</a>
+    <a href="#resources">For teams</a>
+  </nav>
+
+  <main>
+    <section class="ds" id="intro" style="margin-top:var(--space-7)">
+      <div style="display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap">
+        <img src="assets/logo-pin.png" alt="ClassScout pin logo" style="height:84px">
+        <div>
+          <h1>ClassScout NYC Design System</h1>
+          <p class="lede">The single reference for how ClassScout looks, speaks, and behaves — for designers, developers, and decision makers. ClassScout is a <b>parent-first trust product</b>: every element below exists to help a busy NYC parent decide faster and trust what they see.</p>
+        </div>
+      </div>
+      <div class="audience">
+        <div class="aud"><b>Designers</b>Use the tokens, components, and do/don't rules verbatim. Compose screens from the components — don't redraw them.</div>
+        <div class="aud"><b>Developers</b>Tokens live in <code>styles.css</code> → <code>tokens/</code>. Components in <code>components/</code> (React, inline-styled, token-driven). The live click-through is <code>ui_kits/classscout-web/index.html</code>.</div>
+        <div class="aud"><b>Decision makers</b>The principles and trust system below are the product strategy: specific, source-backed, honest about uncertainty. If a screen violates them, it isn't ready.</div>
+      </div>
+    </section>
+
+    <section class="ds" id="principles">
+      <h2>Principles</h2>
+      <p class="lede">Theme: <b>calm civic warmth</b> — local, useful, caring, credible. Never a toy app, coupon site, SaaS dashboard, or overhyped AI product.</p>
+      <table class="spec">
+        <tr><th>Principle</th><th>What it means in the UI</th></tr>
+        <tr><td><b>Trust before cleverness</b></td><td>Every badge has an operational definition. No jokes in system states. No "verified" without a verification process.</td></tr>
+        <tr><td><b>Parent-first, not category-first</b></td><td>Search starts from parent intent: age, place, date, budget — not taxonomy browsing.</td></tr>
+        <tr><td><b>Make uncertainty visible</b></td><td>"Estimated from $45 — confirm with provider", "Last checked 2 July 2026", "Age not confirmed". Never hidden in footers.</td></tr>
+        <tr><td><b>Every listing answers five things</b></td><td>Age · location · time · cost · source/freshness. A card missing one shows its "not confirmed" state instead.</td></tr>
+        <tr><td><b>Mobile is for finding, tablet for comparing, desktop for planning</b></td><td>Same product logic everywhere; layout, navigation, and density adapt per breakpoint.</td></tr>
+        <tr><td><b>Scout is a guide, not an authority</b></td><td>"May fit" + reasons + what to confirm. Never "best", "guaranteed", "safe", "AI verified".</td></tr>
+      </table>
+    </section>
+
+    <section class="ds" id="brand">
+      <h2>Brand</h2>
+      <p class="lede">One name, always: <b>ClassScout NYC</b>. Never "Class Scout NY", "ClassScout NY", or other mixes. The pin mark and wordmark are real assets in <code>assets/</code> — never redraw them.</p>
+      <div class="demo" style="display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:stretch">
+        <div style="flex:1;min-width:180px;display:grid;place-items:center;background:var(--bg-main);border:1px solid var(--border-soft);border-radius:var(--radius-image);padding:var(--space-5)"><img src="assets/logo-pin.png" alt="Pin logo on oat" style="height:110px"></div>
+        <div style="flex:1;min-width:180px;display:grid;place-items:center;background:var(--bg-card);border:1px solid var(--border-soft);border-radius:var(--radius-image);padding:var(--space-5)"><img src="assets/wordmark.png" alt="Wordmark" style="height:110px"></div>
+        <div style="flex:1;min-width:180px;display:grid;place-items:center;background:var(--brand-navy);border-radius:var(--radius-image);padding:var(--space-5)"><img src="assets/logo-pin-light.png" alt="Light pin logo on navy" style="height:110px"></div>
+      </div>
+      <p class="demo-note">On dark backgrounds (navy footer, dark bands) always use the light variant <code>assets/logo-pin-light.png</code>; the standard mark is for oat/white surfaces. Sage <code>#94A390</code> and clay <code>#C98973</code> come from the mascot and are illustration accents only — never actions or semantics. Logo currently exists as PNG only; request vector source from the team.</p>
+    </section>
+
+    <section class="ds" id="color">
+      <h2>Color</h2>
+      <p class="lede"><b>Bluestone</b> — a cool NYC-civic palette from the city's own materials: bluestone-blue that acts, park green that confirms, burnt amber that flags estimates, brick red reserved for errors, and a marigold spark for warmth. Cool oat paper, not cream. Warm, readable, low-anxiety.</p>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:var(--bg-main)"></div><div class="n">--bg-main</div><div class="v">#ECEFE9 · page</div></div>
+        <div class="sw"><div class="chip" style="background:var(--bg-card)"></div><div class="n">--bg-card</div><div class="v">#FFFFFF · cards</div></div>
+        <div class="sw"><div class="chip" style="background:var(--bg-sunken)"></div><div class="n">--bg-sunken</div><div class="v">#E1E6DC · wells</div></div>
+        <div class="sw"><div class="chip" style="background:var(--text-primary)"></div><div class="n">--text-primary</div><div class="v">#1B2A31</div></div>
+        <div class="sw"><div class="chip" style="background:var(--text-secondary)"></div><div class="n">--text-secondary</div><div class="v">#566670 · metadata</div></div>
+        <div class="sw"><div class="chip" style="background:var(--primary)"></div><div class="n">--primary</div><div class="v">#1F5E7A · main CTA</div></div>
+        <div class="sw"><div class="chip" style="background:var(--primary-dark)"></div><div class="n">--primary-dark</div><div class="v">#16455B · hover</div></div>
+        <div class="sw"><div class="chip" style="background:var(--chip-bg)"></div><div class="n">--chip-bg</div><div class="v">#E2ECEA · chips</div></div>
+        <div class="sw"><div class="chip" style="background:var(--trust)"></div><div class="n">--trust</div><div class="v">#4E7C4A · trust only</div></div>
+        <div class="sw"><div class="chip" style="background:var(--warning)"></div><div class="n">--warning</div><div class="v">#C0801F · estimates</div></div>
+        <div class="sw"><div class="chip" style="background:var(--error)"></div><div class="n">--error</div><div class="v">#B0463F · errors only</div></div>
+        <div class="sw"><div class="chip" style="background:var(--highlight)"></div><div class="n">--highlight</div><div class="v">#E7A733 · marigold accent</div></div>
+        <div class="sw"><div class="chip" style="background:var(--brand-navy)"></div><div class="n">--brand-navy</div><div class="v">#16323F · footer</div></div>
+        <div class="sw"><div class="chip" style="background:var(--border-soft)"></div><div class="n">--border-soft</div><div class="v">#D8DCCF</div></div>
+      </div>
+      <div class="dodont">
+        <div class="dd do"><span class="tag">Do</span><ul><li>Teal for primary actions, one per screen</li><li>Green only on confirmed trust signals</li><li>Amber for estimates and "check this"</li><li>Maintain WCAG 2.2 AA contrast</li></ul></div>
+        <div class="dd dont"><span class="tag">Don't</span><ul><li>Neon gradients or rainbow systems</li><li>Red for normal attention</li><li>Low-contrast grey for important metadata</li><li>Green checkmarks on unconfirmed info</li></ul></div>
+      </div>
+    </section>
+
+    <section class="ds" id="type">
+      <h2>Typography</h2>
+      <p class="lede">Inter (self-hosted variable font, system fallback). Every heading token uses <code>clamp()</code>, resolving mobile→desktop automatically. Sentence case everywhere.</p>
+      <div class="demo">
+        <div style="font:var(--text-h1)">H1 — Find trusted kids’ activities</div>
+        <div style="font:var(--text-h2);margin-top:10px">H2 — How ClassScout helps parents decide</div>
+        <div style="font:var(--text-h3);margin-top:10px">H3 — Check before booking</div>
+        <div style="font:var(--text-card-title);margin-top:10px">Card title — Kids Robotics Workshop</div>
+        <div style="font:var(--text-body);margin-top:10px;max-width:var(--measure-text)">Body 16 — Hands-on robotics class for children who enjoy building, problem-solving, and small-group STEM activities.</div>
+        <div style="font:var(--text-meta);color:var(--text-secondary);margin-top:10px">Meta 14 — Brooklyn Robot Foundry · Park Slope, Brooklyn · Last checked 2 July 2026</div>
+        <div style="font:var(--text-badge);color:var(--text-secondary);margin-top:10px;text-transform:uppercase;letter-spacing:var(--tracking-wide)">Badge 12.5 — official source</div>
+      </div>
+      <p class="demo-note">H1 32→48 · H2 24→32 · H3 20→24 · card title 17→19. Editorial text max-width 720px. Uppercase + letterspacing for tiny eyebrows only.</p>
+    </section>
+
+    <section class="ds" id="space">
+      <h2>Spacing &amp; shape</h2>
+      <p class="lede">8px grid: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64. Soft but not childish.</p>
+      <table class="spec">
+        <tr><th>Element</th><th>Radius</th><th>Elevation</th></tr>
+        <tr><td>Cards</td><td>18px (<code>--radius-card</code>) + 1px <code>--border-soft</code></td><td><code>--shadow-card</code>, lifts to <code>--shadow-card-hover</code></td></tr>
+        <tr><td>Buttons / inputs</td><td>12px</td><td>flat</td></tr>
+        <tr><td>Chips &amp; badges</td><td>full pill</td><td>flat</td></tr>
+        <tr><td>Images</td><td>16px</td><td>—</td></tr>
+        <tr><td>Modals / bottom sheets</td><td>24px</td><td><code>--shadow-modal</code> / <code>--shadow-sheet</code> over a navy scrim</td></tr>
+      </table>
+      <p class="demo-note">Motion: 150–250ms <code>--ease-calm</code> fades and lifts only. <code>prefers-reduced-motion</code> is respected globally. Hover darkens; press darkens further; nothing shrinks or bounces.</p>
+    </section>
+
+    <section class="ds" id="layout">
+      <h2>Breakpoints &amp; layout</h2>
+      <table class="spec">
+        <tr><th>Range</th><th>Name</th><th>Layout rules</th></tr>
+        <tr><td>0–374</td><td>XS</td><td rowspan="2">Single column only. Five-tab bottom nav. Filters in a bottom sheet. Compact cards. Map is a separate full-screen mode — never beside the list.</td></tr>
+        <tr><td>375–599</td><td>SM</td></tr>
+        <tr><td>600–899</td><td>MD</td><td>1–2 column card grid, inline search panel, chips + filter drawer.</td></tr>
+        <tr><td>900–1199</td><td>LG</td><td>Two columns allowed; tablet landscape gets the list + map split with synced selection.</td></tr>
+        <tr><td>1200–1439</td><td>XL</td><td>Filter rail (264px) + results (≥420px) + map (≥420px). Top navigation, hover as enhancement.</td></tr>
+        <tr><td>1440+</td><td>XXL</td><td>Same as XL; text-heavy pages stay capped at 1200px.</td></tr>
+      </table>
+      <p class="demo-note">Never horizontal scroll. Rotation and navigation preserve filters, scroll, selection, and map bounds. See it live: resize <a href="ui_kits/classscout-web/index.html">the UI kit</a>.</p>
+    </section>
+
+    <section class="ds" id="voice">
+      <h2>Voice &amp; copy</h2>
+      <p class="lede">Calm, practical, transparent, local, adult-facing. Precision beats promise — specific claims are what make parents trust the product.</p>
+      <div class="dodont">
+        <div class="dd do"><span class="tag">Say</span><ul>
+          <li>"Estimated price shown for planning."</li>
+          <li>"Last checked 2 July 2026."</li>
+          <li>"This may fit because it is indoor and listed for ages 5–8."</li>
+          <li>"Good for children who enjoy hands-on building."</li>
+          <li>"Schedule may change. Please confirm with the provider."</li>
+          <li>"No child name required."</li>
+        </ul></div>
+        <div class="dd dont"><span class="tag">Never</span><ul>
+          <li>"Guaranteed safe." / "Fully verified."</li>
+          <li>"Perfect for every child!"</li>
+          <li>"AI-powered magic!"</li>
+          <li>"The best activity in NYC."</li>
+          <li>"Cheap" / "Only $25"</li>
+          <li>Jokes in loading or error states</li>
+        </ul></div>
+      </div>
+      <table class="spec">
+        <tr><th>Content</th><th>Rule</th></tr>
+        <tr><td>Listing title</td><td>Clear activity name ("Kids Robotics Workshop"), never promotional. Provider name always separate.</td></tr>
+        <tr><td>Summary</td><td>One sentence, 100–160 chars: <i>[format] for [age/interest] in [context], useful for [parent benefit]</i>.</td></tr>
+        <tr><td>Price</td><td>"Free" · "Estimated from $25" · "Price not confirmed" — status is always explicit.</td></tr>
+        <tr><td>Schedule</td><td>"This Saturday" · "Drop-in available" · "Schedule not confirmed" — exact vs estimated is always distinguished.</td></tr>
+        <tr><td>Source</td><td>"Source: provider website" · "Last checked: 2 July 2026" · weak source → "Source not confirmed. Please verify details before attending."</td></tr>
+      </table>
+    </section>
+
+    <section class="ds" id="trust">
+      <h2>Trust system</h2>
+      <p class="lede">Nine labels, each with an operational meaning. Use a badge only when its condition is true; unknowns get the amber "not confirmed" labels, never silence.</p>
+      <div class="demo"><div id="demo-trust"></div></div>
+      <table class="spec">
+        <tr><th>Label</th><th>Meaning</th></tr>
+        <tr><td>Official source</td><td>Provider, venue, school, city, or official event page</td></tr>
+        <tr><td>Public source</td><td>Public directory, event feed, or mapped business data</td></tr>
+        <tr><td>Provider claimed</td><td>Provider completed the claim/update flow</td></tr>
+        <tr><td>Recently checked</td><td>Checked within the freshness window (events 7d · this-week 3–5d · camps 14d · classes 30d · venues 60–90d)</td></tr>
+        <tr><td>Price / schedule estimate</td><td>Useful for planning, not guaranteed</td></tr>
+        <tr><td>Age / source not confirmed</td><td>Field inferred or missing — shown, never omitted</td></tr>
+        <tr><td>Reported outdated</td><td>A user flagged possible stale information</td></tr>
+      </table>
+      <p class="demo-note">Public copy is explainable ("High confidence: recently checked from provider source") — never numeric scores, never "AI verified", "safe", or "approved".</p>
+    </section>
+
+    <section class="ds" id="core">
+      <h2>Core controls</h2>
+      <p class="lede">Buttons (one primary per screen), pill filter chips (always reversible), save and compare toggles, labelled fields. All targets ≥44px, all focus rings visible.</p>
+      <div class="demo"><div id="demo-core"></div></div>
+      <p class="demo-note">Labels are sentence case. Save is never hidden in an overflow menu. Selected chips turn solid teal; active-filter rows use the removable variant with ×.</p>
+    </section>
+
+    <section class="ds" id="search">
+      <h2>Search &amp; filters</h2>
+      <p class="lede">The homepage behaves like a tool: five parent-intent fields, one primary action, Scout as the secondary path, and a trust line underneath. Quick-start cards match real parent situations.</p>
+      <div class="demo"><div id="demo-search"></div></div>
+      <p class="demo-note">Full filter set (age, location, date, price, type, indoor/outdoor, booking, source confidence) lives in <code>FilterSheet</code> — bottom sheet on mobile, 264px rail on desktop. Results always show active filters as removable chips: "Showing: Ages 5–8 · Brooklyn · This weekend".</p>
+    </section>
+
+    <section class="ds" id="listing">
+      <h2>Listing card</h2>
+      <p class="lede">The most important component. It must answer: what is it, who is it for, where, when, what does it cost, how reliable is the information, and what's the next step.</p>
+      <div class="demo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,380px));gap:20px"><div id="demo-card"></div><div id="demo-card2"></div></div>
+      <div class="dodont">
+        <div class="dd do"><span class="tag">Do</span><ul><li>Real listing/provider imagery only; no image → honest placeholder</li><li>Age and source states always present</li><li>Price and freshness in the decision row</li><li>Summary ≤160 characters</li></ul></div>
+        <div class="dd dont"><span class="tag">Don't</span><ul><li>Generic child stock photos</li><li>Cards without age state — use "Age not confirmed"</li><li>"Verified" badges without verification</li><li>Price uncertainty buried in footers</li></ul></div>
+      </div>
+    </section>
+
+    <section class="ds" id="detail">
+      <h2>Detail page blocks</h2>
+      <p class="lede">A detail page is a parent briefing, in this order: parent summary → key facts → why it may fit → what to confirm → source block → report path. On mobile the facts table stacks.</p>
+      <div class="demo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start"><div id="demo-facts"></div><div id="demo-confirm"></div></div>
+      <div class="demo"><div id="demo-source"></div></div>
+    </section>
+
+    <section class="ds" id="scout">
+      <h2>Scout AI</h2>
+      <p class="lede">A guided discovery assistant. Every recommendation explains why it <i>may</i> fit, what it's based on, what's uncertain, and what to confirm — and links out. The privacy note ("Do not enter a child's full name") ships with the entry card.</p>
+      <div class="demo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start"><div id="demo-scout"></div></div>
+    </section>
+
+    <section class="ds" id="states">
+      <h2>System states</h2>
+      <p class="lede">States communicate product quality. Loading is serious and skeletal; empty states name the search and offer recovery; errors keep a route forward. Never jokes, never dead ends.</p>
+      <div class="demo"><div id="demo-states"></div></div>
+    </section>
+
+    <section class="ds" id="nav">
+      <h2>Navigation</h2>
+      <p class="lede">Desktop: one row — six task links max + "Ask Scout" CTA; secondary items (About, How trust works, legal) behind the hamburger. Mobile: exactly five bottom tabs — Search · This Week · Saved · Scout · Account. Navigation always preserves search state.</p>
+      <div class="demo"><div id="demo-nav"></div></div>
+    </section>
+
+    <section class="ds" id="map">
+      <h2>Map</h2>
+      <p class="lede">The map answers "is this reachable?" — it is never the only path (an accessible list always exists). Mobile has separate list/map modes; tablet landscape and desktop use a synced split view. Few pin colours, on purpose.</p>
+      <div class="demo"><div id="demo-map"></div></div>
+      <p class="demo-note">Pins: teal standard · green free · navy saved · muted approximate ("Approximate area" when the exact address is unknown) · count clusters · selected = larger + navy ring. Engine recommendation: MapLibre + OSM tiles (or Mapbox). Location permission is optional and requested only on "Near me".</p>
+    </section>
+
+    <section class="ds" id="a11y">
+      <h2>Accessibility — WCAG 2.2 AA</h2>
+      <p class="lede">Parents use this one-handed, outdoors, carrying a child, under time pressure. Accessibility is product quality, not compliance.</p>
+      <table class="spec">
+        <tr><th>Requirement</th><th>How the system delivers it</th></tr>
+        <tr><td>Keyboard access + visible focus</td><td>Every control uses the shared 2px teal focus ring (<code>.cs-focusable</code>)</td></tr>
+        <tr><td>Tap targets ≥44px</td><td><code>--tap-target</code> enforced in buttons, inputs, nav tabs, save controls</td></tr>
+        <tr><td>No hover-only interactions</td><td>Hover only darkens/lifts; all functions work by click/tap/keyboard</td></tr>
+        <tr><td>Labels & errors</td><td>Every field has a visible label; errors explain recovery and use <code>role="alert"</code></td></tr>
+        <tr><td>Map alternative</td><td>Every pin corresponds to a list item; pins carry text labels</td></tr>
+        <tr><td>Reduced motion</td><td><code>prefers-reduced-motion</code> globally disables animation in <code>tokens/base.css</code></td></tr>
+        <tr><td>Colour independence</td><td>Trust states pair colour with icon + text; no colour-only meaning</td></tr>
+      </table>
+    </section>
+
+    <section class="ds" id="resources">
+      <h2>For teams</h2>
+      <table class="spec">
+        <tr><th>Audience</th><th>Start here</th></tr>
+        <tr><td>Designers</td><td>This page + the Design System tab cards. Compose from components; check the do/don't lists before shipping.</td></tr>
+        <tr><td>Developers</td><td><code>styles.css</code> (tokens entry) · <code>components/&lt;group&gt;/*.jsx</code> with <code>.d.ts</code> props contracts and <code>.prompt.md</code> usage notes · <code>fonts/</code> self-hosted Inter.</td></tr>
+        <tr><td>Product / decision makers</td><td><code>readme.md</code> (design guide) · <code>guidelines/handoff-v2-digest.md</code> (operative spec: acceptance criteria, freshness windows, metrics).</td></tr>
+        <tr><td>Everyone</td><td>Live click-through: <a href="ui_kits/classscout-web/index.html">ClassScout web UI kit</a> — resize to see every breakpoint.</td></tr>
+      </table>
+      <p class="demo-note">Open questions for the brand team: vector logo source; the production icon set (Lucide is a stand-in); real listing photography.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+const h = React.createElement;
+function mount(id, node) { const el = document.getElementById(id); if (el) ReactDOM.createRoot(el).render(node); }
+const row = (gap) => ({ display: 'flex', gap: gap || 10, flexWrap: 'wrap', alignItems: 'center' });
+
+Promise.resolve(window.CSDS).then((NS) => {
+  if (!NS) throw new Error('component bundle missing');
+  const { Button, FilterChip, SaveButton, CompareButton, TextInput, SelectField,
+    TrustBadge, PriceEstimateLabel, LastCheckedLabel, ReportOutdatedLink, SourceBlock,
+    HeroSearchPanel, QuickStartCard, ActivityCard, DetailFactsTable, ConfirmChecklist,
+    ScoutPromptCard, ScoutResultCard, EmptyState, ErrorState, LoadingSkeleton,
+    TopNav, BottomNav, MapPin, MapPreviewCard } = NS;
+
+  mount('demo-trust', h('div', { style: { display: 'flex', flexDirection: 'column', gap: 14 } },
+    h('div', { style: row(8) }, ['official-source','public-source','provider-claimed','recently-checked','price-estimate','schedule-estimate','age-not-confirmed','source-not-confirmed','reported-outdated'].map((k) => h(TrustBadge, { key: k, kind: k }))),
+    h('div', { style: row(16) },
+      h(PriceEstimateLabel, { status: 'free' }),
+      h(PriceEstimateLabel, { amount: '$45' }),
+      h(PriceEstimateLabel, { status: 'unknown' })),
+    h(LastCheckedLabel, { date: '2 July 2026', source: 'provider website' }),
+    h(LastCheckedLabel, { date: '28 May 2026', stale: true }),
+    h(ReportOutdatedLink, {})
+  ));
+
+  function CoreDemo() {
+    const [saved, setSaved] = React.useState(true);
+    const [cmp, setCmp] = React.useState(false);
+    const [sel, setSel] = React.useState(['Ages 5–8']);
+    const toggle = (l) => setSel((s) => s.includes(l) ? s.filter((x) => x !== l) : [...s, l]);
+    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+      h('div', { style: row() },
+        h(Button, { icon: 'search' }, 'Show activities'),
+        h(Button, { variant: 'secondary', icon: 'sparkles' }, 'Let Scout guide me'),
+        h(Button, { variant: 'ghost', iconRight: 'external-link' }, 'Visit provider'),
+        h(Button, { variant: 'danger', size: 'sm' }, 'Remove'),
+        h(Button, { disabled: true }, 'Show activities')),
+      h('div', { style: row(8) },
+        ['Ages 5–8', 'Free', 'Indoor'].map((l) => h(FilterChip, { key: l, label: l, selected: sel.includes(l), onClick: () => toggle(l) })),
+        h(FilterChip, { label: 'Brooklyn', removable: true }),
+        h(SaveButton, { saved, onToggle: () => setSaved(!saved) }),
+        h(CompareButton, { comparing: cmp, onToggle: () => setCmp(!cmp), count: cmp ? 2 : 0 })),
+      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 } },
+        h(TextInput, { label: 'Neighbourhood', placeholder: 'e.g. Park Slope', hint: 'Borough or neighbourhood' }),
+        h(TextInput, { label: 'Email', value: 'parent@', onChange: () => {}, error: 'Please enter a valid email address.' }),
+        h(SelectField, { label: 'Child age', placeholder: 'Any age', options: ['0–2', '3–5', '5–8', '6–10', '11–14'] })));
+  }
+  mount('demo-core', h(CoreDemo));
+
+  mount('demo-search', h('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+    h(HeroSearchPanel, {}),
+    h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 } },
+      h(QuickStartCard, { label: 'This weekend', icon: 'calendar' }),
+      h(QuickStartCard, { label: 'Free & low-cost', icon: 'info' }),
+      h(QuickStartCard, { label: 'Indoor activities', icon: 'house' }),
+      h(QuickStartCard, { label: 'Near me', icon: 'locate-fixed' }))));
+
+  function CardDemo(props) {
+    const [saved, setSaved] = React.useState(!!props.startSaved);
+    return h(ActivityCard, Object.assign({
+      saved, onToggleSave: () => setSaved(!saved),
+      onViewDetails: () => {}, providerHref: '#', onAskScout: () => {},
+    }, props.card));
+  }
+  mount('demo-card', h(CardDemo, { startSaved: false, card: {
+    title: 'Kids Robotics Workshop', provider: 'Brooklyn Robot Foundry', neighborhood: 'Park Slope, Brooklyn',
+    category: 'STEM', ages: '6–10', setting: 'Indoor',
+    summary: 'Hands-on robotics class for children who enjoy building and problem-solving.',
+    price: '$45', schedule: 'This Saturday',
+    sourceKind: 'official-source', lastChecked: '2 July 2026', sourceLabel: 'provider website',
+  } }));
+  mount('demo-card2', h(CardDemo, { startSaved: true, card: {
+    title: 'After-School Art Studio', provider: 'Uptown Art House', neighborhood: 'Harlem, Manhattan',
+    category: 'Art', setting: 'Indoor',
+    summary: 'Small-group drawing and painting for children who like making things at their own pace.',
+    priceStatus: 'unknown', schedule: 'Schedule not confirmed',
+    sourceKind: 'source-not-confirmed', lastChecked: '20 May 2026', sourceLabel: 'public listing', stale: true,
+  } }));
+
+  mount('demo-facts', h(DetailFactsTable, { rows: [
+    { label: 'Age range', value: '6–10' },
+    { label: 'Activity type', value: 'STEM class' },
+    { label: 'Location', value: 'Park Slope, Brooklyn' },
+    { label: 'Price', value: h(PriceEstimateLabel, { amount: '$45' }) },
+    { label: 'Booking', value: 'Registration required' },
+    { label: 'Last checked', value: '2 July 2026' },
+  ] }));
+  mount('demo-confirm', h(ConfirmChecklist, {}));
+  mount('demo-source', h(SourceBlock, { sourceType: 'Official provider website', sourceUrl: '#', lastChecked: '2 July 2026' }));
+
+  mount('demo-scout', h(React.Fragment, null,
+    h(ScoutPromptCard, { beta: true }),
+    h(ScoutResultCard, {
+      title: 'Kids Robotics Workshop', provider: 'Brooklyn Robot Foundry', neighborhood: 'Park Slope, Brooklyn',
+      reason: 'it is indoor, listed for ages 6–10, and available this weekend in Brooklyn.',
+      confirmItems: ['Current price', 'Exact time', 'Whether registration is required'],
+      onViewDetails: () => {}, providerHref: '#',
+    })));
+
+  mount('demo-states', h('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+    h(EmptyState, { title: 'No matching activities found for ages 5–8 in Park Slope this weekend' }),
+    h(ErrorState, { onRetry: () => {}, actions: [{ label: 'Browse this week' }, { label: 'Ask Scout', icon: 'sparkles' }] }),
+    h(LoadingSkeleton, { count: 2 })));
+
+  function NavDemo() {
+    const [tab, setTab] = React.useState('search');
+    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 20 } },
+      h('div', { style: { border: '1px solid var(--border-soft)', borderRadius: 'var(--radius-card)', overflow: 'hidden' } },
+        h(TopNav, { current: 'week', onScout: () => {}, onMenu: () => {}, logoSrc: 'assets/logo-pin.png', style: { position: 'static' } })),
+      h('div', { style: { width: 390, maxWidth: '100%', border: '1px solid var(--border-soft)', borderRadius: 'var(--radius-card)', overflow: 'hidden', position: 'relative', height: 140, background: 'var(--bg-main)' } },
+        h('div', { style: { padding: 12, font: 'var(--text-meta)', color: 'var(--text-secondary)' } }, 'Mobile viewport (390px)'),
+        h(BottomNav, { current: tab, onNav: setTab, badge: { saved: 3 }, style: { position: 'absolute' } })));
+  }
+  mount('demo-nav', h(NavDemo));
+
+  mount('demo-map', h('div', { style: { display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' } },
+    h('div', { style: { display: 'flex', gap: 'var(--space-4)', alignItems: 'center', background: 'var(--bg-sunken)', borderRadius: 'var(--radius-card)', padding: 'var(--space-5)' } },
+      h(MapPin, { label: 'Standard' }),
+      h(MapPin, { type: 'free', label: 'Free' }),
+      h(MapPin, { type: 'saved', label: 'Saved' }),
+      h(MapPin, { type: 'approximate', label: 'Approximate' }),
+      h(MapPin, { label: 'Selected', selected: true }),
+      h(MapPin, { type: 'cluster', count: 12 })),
+    h(MapPreviewCard, {
+      title: 'Kids Robotics Workshop', provider: 'Brooklyn Robot Foundry', ages: '6–10',
+      price: '$45', schedule: 'Sat 10am', lastChecked: '2 July 2026', sourceLabel: 'provider website',
+      onViewDetails: () => {}, onClose: () => {},
+    })));
+}).catch((e) => {
+  document.querySelectorAll('[id^="demo-"]').forEach((el) => {
+    el.innerHTML = '<span style="font:13px monospace;color:var(--error)">Demo failed to load: ' + (e && e.message) + '</span>';
+  });
+});
+</script>
+
+<script>
+/* Mark the active section in the contents nav (nav rule: active state is visible).
+   Reduced-motion safe: no animation, just an aria-current flag the CSS styles. */
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  function setActive(id) {
+    links.forEach(function (a) {
+      a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false');
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var visible = new Set();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) visible.add(en.target.id); else visible.delete(en.target.id);
+      });
+      /* topmost visible section wins */
+      for (var i = 0; i < sections.length; i++) {
+        if (visible.has(sections[i].id)) { setActive(sections[i].id); break; }
+      }
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    sections.forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "design-system";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…}. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: ≥2 visible non-fixed children, each with authored px width
+  // AND height, all within ±2px of each other. Off unless the page opts in
+  // via data-om-multi-frame on the stop element — guards against card grids
+  // and pricing tables that match the geometry but aren't separate canvases.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var cands = [];
+    for (var k = 0; k < el.children.length; k++) {
+      var ch = el.children[k];
+      var cs; try { cs = getComputedStyle(ch); } catch (e) { continue; }
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') continue;
+      var rc = rectOf(ch);
+      if (rc.width < 2 || rc.height < 2) continue;
+      if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+      cands.push(rc);
+    }
+    if (cands.length >= 2) {
+      var w0 = cands[0].width, h0 = cands[0].height, ok = true;
+      for (var q = 1; q < cands.length; q++)
+        if (Math.abs(cands[q].width - w0) > 2 || Math.abs(cands[q].height - h0) > 2) ok = false;
+      if (ok) return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (__m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body></html>
