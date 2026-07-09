@@ -68,12 +68,24 @@ use them to pull the current design source down, then rebuild and redeploy.
    `unpkg.com`, rewrite it to the local `assets/vendor/…` path (see how the existing
    files do it — depth-relative). Do not delete `scripts/`, `.github/`, `package.json`,
    `.gitignore`, `README.md`, or `HANDOFF.md`.
-4. **Rebuild & verify**:
-   - `npm install` (first time) then `npm run build` — must succeed, both bundles valid.
-   - `npm run serve` and headless-check the docs page (`/`) and UI kit
+4. **Rebuild, verify & stamp — one command**: `npm install` (first time), then
+   ```
+   npm run sync -- --updated-at="<the project's updatedAt from get_project>" --note="<what changed>"
+   ```
+   `npm run sync` runs the deterministic tail for you: **build** (regenerate `dist/`,
+   both bundles must assemble) → **verify** (`scripts/verify.mjs`: required files present,
+   no CDN/unpkg references, every local asset reference resolves, bundles expose their
+   globals, key URLs serve 200) → **stamp** (record the import point in
+   `.last-import.json`, including the remote `updatedAt` you pass in). It halts loudly on
+   any failure. Pass the `updatedAt` you read in step 1 so drift can be detected later
+   without re-auth. (`npm run build` / `npm run verify` / `npm run stamp` also run
+   individually.)
+   - The scripted verify is headless and dependency-free (no browser). For a deeper
+     visual pass, `npm run serve` and eyeball the docs page (`/`) and UI kit
      (`/ui_kits/classscout-web/index.html`): all `[id^="demo-"]` mount, `window.CSDS`
-     populated, no console errors, no failed demos, no 404s; kit renders at 1280px and 390px.
-5. **Ship**: commit the reconciled `project/` (and any `build.mjs` list updates) with a
+     populated, no console errors, kit renders at 1280px and 390px.
+5. **Ship**: `npm run sync` stops before git so you can review. Commit the reconciled
+   `project/`, the updated `.last-import.json` (and any `build.mjs` list updates) with a
    clear message, then `git push origin main`. The Pages workflow redeploys automatically.
    Confirm the run at
    https://github.com/moldovancsaba/classscoutdesign/actions and the live URL.
@@ -87,6 +99,37 @@ use them to pull the current design source down, then rebuild and redeploy.
   and the live site matches the current Claude Design project.
 
 ---
+
+## Why the import is model-driven (and `npm run sync` is not)
+
+`DesignSync` is an **MCP tool the interactive agent calls** — a plain Node script
+cannot reach it. So steps 1–3 (authenticate, diff, `get_file`, reconcile into
+`project/`) are inherently done by *you, the agent*, not by a script. `npm run sync`
+only automates the **deterministic tail** that follows once `project/` is already
+updated: build → verify → stamp. Keep that boundary in mind — running `npm run sync`
+without first importing just rebuilds the current source.
+
+## Detecting drift (`.last-import.json`)
+
+Nothing auto-syncs Claude Design → this repo, and nothing watches for changes. The
+only durable signal is `.last-import.json`, written by the stamp step:
+
+```json
+{
+  "projectId": "c4c0d3d0-ee1a-4b25-81f5-615dff01c0d3",
+  "remoteUpdatedAt": "<project updatedAt at last import>",
+  "importedAt": "<when we last imported>",
+  "importedBy": "<git email>",
+  "note": "<optional>"
+}
+```
+
+To decide whether a refresh is due: in an interactive session, `DesignSync get_project`
+and compare the live `updatedAt` against `remoteUpdatedAt` here. Newer ⇒ import is
+stale ⇒ run the flow above. Equal ⇒ nothing to import; say so and stop (don't churn
+the repo). A scheduled cloud routine can read `importedAt` from this committed file and
+*remind* you when it's old, but it cannot compare against the live project (no headless
+DesignSync auth) — the actual diff always needs the interactive step.
 
 ## Direction note
 

@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "serve": "node scripts/serve.mjs"
+    "serve": "node scripts/serve.mjs",
+    "verify": "node scripts/verify.mjs",
+    "stamp": "node scripts/stamp-import.mjs",
+    "sync": "node scripts/sync.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
