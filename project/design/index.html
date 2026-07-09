@@ -1,0 +1,118 @@
+<!-- @dsCard group="ClassScout Web" viewport="1280x860" subtitle="Final app design — Home / Results / Detail rendered from the real components" name="Final app design" -->
+<!-- @startingPoint section="Screens" subtitle="Final app design mockup" viewport="1280x860" -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClassScout NYC — Final app design</title>
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon-192.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+<!-- Vendored React + the generated screen bundle (CSKIT). No CDN, no in-browser transpile. -->
+<script crossorigin="anonymous" src="../assets/vendor/react.production.min.js"></script>
+<script crossorigin="anonymous" src="../assets/vendor/react-dom.production.min.js"></script>
+<style>
+  html, body { margin: 0; background: var(--bg-main); color: var(--text-primary); font-family: var(--font-ui); }
+  * { box-sizing: border-box; }
+  a { color: inherit; }
+
+  /* Header band — brand navy, light pin mark (brand rule: light logo on dark surfaces). */
+  .hero { background: var(--brand-navy); color: var(--pure-white); padding: var(--space-6) var(--space-5); }
+  .hero-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: var(--space-5); flex-wrap: wrap; }
+  .hero img { height: 64px; }
+  .hero h1 { font: var(--text-h1); margin: 0 0 var(--space-2); }
+  .hero p { font: var(--text-body); opacity: .85; margin: 0; max-width: 60ch; }
+  .actions { display: flex; gap: var(--space-3); margin-top: var(--space-4); flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: var(--space-2); font: var(--text-body-medium);
+         padding: 10px var(--space-4); border-radius: var(--radius-button); text-decoration: none; min-height: var(--tap-target); }
+  .btn.primary { background: var(--pure-white); color: var(--brand-navy); }
+  .btn.ghost { background: rgba(255,255,255,.12); color: var(--pure-white); border: 1px solid rgba(255,255,255,.28); }
+
+  /* Gallery of device frames. */
+  .wrap { max-width: 1200px; margin: 0 auto; padding: var(--space-6) var(--space-5) var(--space-7); }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-6); align-items: start; }
+  .frame-col { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+  .device { position: relative; width: 390px; max-width: 100%; height: 780px; background: var(--bg-main);
+            border-radius: 40px; border: 10px solid #0f2530; box-shadow: var(--shadow-modal);
+            overflow: hidden; }
+  .screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+  .caption { text-align: center; }
+  .caption b { display: block; font: var(--text-body-medium); }
+  .caption span { font: var(--text-meta); color: var(--text-secondary); }
+  .note { font: var(--text-meta); color: var(--text-secondary); margin-top: var(--space-6); max-width: 70ch; }
+  .note code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px;
+               background: var(--bg-sunken); padding: 2px 6px; border-radius: var(--radius-input); }
+  .err { padding: var(--space-4); font: 14px monospace; color: var(--error); white-space: pre-wrap; }
+</style>
+</head><body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <img src="../assets/logo-pin-light.png" alt="ClassScout pin logo">
+    <div style="flex:1;min-width:260px">
+      <h1>ClassScout — Final app design</h1>
+      <p>The finished ClassScout experience for a busy NYC parent: find an activity, compare on the
+         results screen, and decide on the detail page. Every screen below is rendered <b>live from the
+         real design-system components</b> — so this mockup can never drift from the system.</p>
+      <div class="actions">
+        <a class="btn primary" href="../ui_kits/classscout-web/index.html">Open interactive click-through →</a>
+        <a class="btn ghost" href="../">← Back to the design system</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="gallery" id="gallery">
+    <div class="frame-col"><div class="device"><div class="screen" id="screen-home"></div></div>
+      <div class="caption"><b>Home</b><span>Search-first landing · hero search + quick starts</span></div></div>
+    <div class="frame-col"><div class="device"><div class="screen" id="screen-results"></div></div>
+      <div class="caption"><b>Results</b><span>Source-backed listings · filters · trust signals</span></div></div>
+    <div class="frame-col"><div class="device"><div class="screen" id="screen-detail"></div></div>
+      <div class="caption"><b>Detail</b><span>Facts, price estimate, last-checked, confirm checklist</span></div></div>
+  </div>
+
+  <p class="note">These are the mobile screens (the primary “finding” context). The
+     <a href="../ui_kits/classscout-web/index.html">interactive click-through</a> is the same code and
+     adapts across every breakpoint — resize it to see the tablet compare and desktop planning layouts.
+     Source: <code>project/ui_kits/classscout-web/*.jsx</code>, rendered via the generated
+     <code>_ds_bundle.js</code> (global <code>CSKIT</code>).</p>
+</main>
+
+<!-- Force the mobile breakpoint for all frames before the bundle's useViewport reads it (Responsive.jsx). -->
+<script>window.__vpOverride = 390;</script>
+<script src="../_ds_bundle.js"></script>
+<script>
+(function () {
+  const h = React.createElement;
+  const NS = window.CSKIT;
+  if (!NS || !NS.HomeScreen) {
+    document.getElementById('gallery').innerHTML =
+      '<div class="err">Could not load the screen bundle. Run <b>npm run build</b> so ' +
+      '<code>_ds_bundle.js</code> exists next to this page.</div>';
+    return;
+  }
+  const { HomeScreen, ResultsScreen, DetailScreen, BottomNav } = NS;
+  const noop = () => {};
+
+  // Each frame is a static snapshot of one screen with its matching bottom tab.
+  // BottomNav is normally position:fixed; we pin it absolute so it lives inside the device frame.
+  function Frame(children, tab, badge) {
+    return h(React.Fragment, null,
+      children,
+      h(BottomNav, { current: tab, onNav: noop, badge, style: { position: 'absolute' } }),
+    );
+  }
+
+  function mount(id, node) { ReactDOM.createRoot(document.getElementById(id)).render(node); }
+
+  const saved = { l2: true };
+  mount('screen-home',    Frame(h(HomeScreen,    { onNav: noop, onSearch: noop }), 'search'));
+  mount('screen-results', Frame(h(ResultsScreen, { onNav: noop, onOpenListing: noop,
+                            filters: { age: '5–8', date: ['This weekend'] }, setFilters: noop,
+                            saved, setSaved: noop }), 'week', { saved: 1 }));
+  mount('screen-detail',  Frame(h(DetailScreen,  { onNav: noop, onBack: noop, saved, setSaved: noop }), 'week', { saved: 1 }));
+})();
+</script>
+</body></html>
