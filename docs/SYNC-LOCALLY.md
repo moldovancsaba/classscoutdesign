@@ -68,6 +68,14 @@ use them to pull the current design source down, then rebuild and redeploy.
    `unpkg.com`, rewrite it to the local `assets/vendor/…` path (see how the existing
    files do it — depth-relative). Do not delete `scripts/`, `.github/`, `package.json`,
    `.gitignore`, `README.md`, or `HANDOFF.md`.
+   - **Favicon:** the Claude Design project's `assets/favicon.ico` is Lovable's
+     favicon, scraped from classscout.ai (a Lovable-built site) during the original
+     "collect its logo" step — NOT a real ClassScout asset. Do not accept it. The
+     build already regenerates the favicon from the pin mark (`scripts/build.mjs`
+     calls `scripts/make-favicon.mjs`), so the deployed site self-heals; still,
+     after importing, run `node scripts/make-favicon.mjs` to refresh the committed
+     `project/assets/favicon*.png`/`.ico`, and ideally replace the favicon in the
+     upstream Claude Design project too so it stops coming back at the source.
 4. **Rebuild, verify & stamp — one command**: `npm install` (first time), then
    ```
    npm run sync -- --updated-at="<the project's updatedAt from get_project>" --note="<what changed>"

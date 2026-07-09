@@ -198,6 +198,18 @@ async function main() {
   console.log('› Copying design-system source → dist/');
   const copied = await copyTree();
 
+  // Always derive the favicon from the ClassScout pin mark, never from a shipped
+  // .ico. This is the durable guard against the scraped Lovable favicon returning
+  // via a future design sync. Best-effort: if sharp is unavailable locally, fall
+  // back to the committed brand favicons (CI installs sharp, so deploys regenerate).
+  try {
+    const { generateFavicons } = await import('./make-favicon.mjs');
+    const written = await generateFavicons(path.join(OUT, 'assets'));
+    console.log('  ✓ favicons regenerated from pin mark: ' + written.join(', '));
+  } catch (e) {
+    console.log('  ! favicon regeneration skipped (' + e.message + '); using committed brand favicons');
+  }
+
   const componentJsx = await listJsx('components');
   const kitJsx = await listJsx('ui_kits/classscout-web');
 
