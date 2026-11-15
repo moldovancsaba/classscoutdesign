@@ -71,3 +71,5 @@ That's it. The first push (or **Actions → Deploy design system to GitHub Pages
 > The workflow builds from source on every push, so the published site always
 > reflects the current design system — no committed build artifacts, no manual
 > re-export.
+
+[Project board review and manual movement journal](docs/PROJECT_BOARD_MOVEMENT_LOG.md).
